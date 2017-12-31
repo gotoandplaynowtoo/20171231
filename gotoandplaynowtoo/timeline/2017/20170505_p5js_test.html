@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>20170505 - P5.js Test</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            canvas {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../js/libs/p5v0.5.8.min.js"></script>
+        <script type="text/javascript">
+            function setup() {
+                createCanvas(window.innerWidth, window.innerHeight);
+            }
+
+            function draw() {
+
+                var size = random(2, 18);
+                var offsetX = random(-2, 2);
+                var offsetY = random(-2, 2);
+
+                ellipse(mouseX + offsetX, mouseY + offsetY, size, size);
+
+            }
+        </script>
+    </body>
+</html>

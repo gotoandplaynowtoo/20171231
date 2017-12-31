@@ -1,0 +1,10 @@
+<ul>
+	{{ #list }}
+	<li class="post">
+		<a href="{{path}}/{{ idx }}.html">
+			<h5 class="post__title"><span>{{ title }}</span></h5>
+			<img class="media" src="{{ path }}/img/{{ idx }}.png">
+		</a>
+	</li>	
+	{{ /list }}
+</ul>

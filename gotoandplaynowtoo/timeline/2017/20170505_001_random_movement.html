@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>20170505_001 - Random Movement</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            canvas {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../js/libs/p5v0.5.8.min.js"></script>
+        <script type="text/javascript">
+            function Particle(position) {
+                this.position = position;
+                this.velocity = createVector(0, 0);
+                this.size = random(2, 32);
+            }
+
+            Particle.prototype = {
+                update: function() {
+                    this.velocity.set(
+                        random(-1, 1),
+                        random(-1, 1)
+                    );
+                    this.position.add(this.velocity);
+                },
+                render: function() {
+                    ellipse(this.position.x, this.position.y, this.size, this.size);
+                }
+            };
+
+///////////////////////////////////////////////////////////////////
+            var particles = [];
+
+            function setup() {
+                createCanvas(window.innerWidth, window.innerHeight);
+
+                for(var i = 0; i < 100; i++) {
+                    var particle = new Particle(
+                        createVector(width * Math.random(), height * Math.random())
+                    );
+                    particles.push(particle);
+                }
+            }
+
+            function draw() {
+                background(255);
+                for(var i = 0, len = particles.length; i < len; i++) {
+                    var particle = particles[i];
+                    particle.update();
+                    particle.render();
+                }
+            }
+        </script>
+    </body>
+</html>

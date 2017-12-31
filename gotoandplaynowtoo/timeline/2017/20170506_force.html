@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>20170506 - Force</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            canvas {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="../../js/libs/p5v0.5.8.min.js"></script>
+        <script type="text/javascript">
+
+            "use strict";
+
+            var particles = [];
+
+            function setup() {
+                createCanvas(window.innerWidth, window.innerHeight);
+                for(var i = 0; i < 200; i++) {
+                    var mass = random(1, 50);
+                    var gravity = createVector(0, 0.1 * mass);
+                    var particle = new Particle(
+                        random(0, width),
+                        random(0, height),
+                        mass,
+                        gravity
+                    );
+                    particles.push(particle);
+                }
+            }
+
+            function draw() {
+                background(255);
+
+                for(var i = 0; i < particles.length; i++) {
+                    var particle = particles[i];
+
+                    var mouse = createVector(mouseX, mouseY);
+                    var center = createVector(width / 2, height / 2);
+                    var wind = center.sub(mouse);
+
+                    wind.setMag(wind.mag() * 0.05);
+                    particle.addForce(wind);
+
+                    particle.update();
+                    particle.render();
+                }
+
+                line(width / 2, height / 2, mouseX, mouseY);
+            }
+
+            function Particle(x, y, m, g) {
+                this.position = createVector(x, y);
+                this.velocity = createVector(0, 0);
+                this.acceleration = createVector(0, 0);
+                this.mass = m;
+                this.gravity = g;
+            }
+
+            Particle.prototype = {
+                constructor: Particle,
+                addForce: function(force) {
+                    var forceCopy = force.copy();
+                    forceCopy.div(this.mass);
+                    this.acceleration.add(forceCopy);
+                },
+                update: function() {
+
+                    this.addForce(this.gravity);
+
+                    this.velocity.add(this.acceleration);
+                    this.position.add(this.velocity);
+                    this.acceleration.set(0, 0);
+
+                    if(this.position.x < 0) {
+                        this.position.x = 0;
+                        this.velocity.x *= -1;
+                        this.velocity.mult(0.6);
+                    }
+
+                    if(this.position.x > width) {
+                        this.position.x = width;
+                        this.velocity.x *= -1;
+                        this.velocity.mult(0.6);
+                    }
+
+                    if(this.position.y < 0) {
+                        this.position.y = 0;
+                        this.velocity.y *= -1;
+                        this.velocity.mult(0.6);
+                    }
+
+                    if(this.position.y > height) {
+                        this.position.y = height;
+                        this.velocity.y *= -1;
+                        this.velocity.mult(0.6);
+                    }
+
+                },
+                render: function() {
+                    var size = this.mass * 1;
+                    ellipse(this.position.x, this.position.y, size, size);
+                }
+            };
+
+        </script>
+    </body>
+</html>
